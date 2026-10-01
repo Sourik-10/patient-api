@@ -1,38 +1,59 @@
-# Patient Management API
+<div align="center">
 
-A small REST API built with **FastAPI** and **Pydantic** for managing patient records. Each patient's BMI and weight category are calculated automatically from height and weight.
+# 🩺 Patient Management API
 
-> **Note:** `patients.json` contains dummy data for learning purposes. It is used as a simple file-based store, not a real database.
+A clean, validated REST API for managing patient records, with **BMI and health category calculated automatically**.
 
-## Features
+![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
+![Pydantic](https://img.shields.io/badge/Pydantic-v2-E92063?logo=pydantic&logoColor=white)
+![License](https://img.shields.io/badge/data-dummy%20only-lightgrey)
 
-- Full CRUD: create, view, update (partial) and delete patients
-- Input validation with Pydantic (positive height/weight/age, allowed gender values, non-empty ID)
-- BMI and verdict (`Underweight` / `Normal` / `Overweight` / `Obese`) computed with Pydantic `computed_field`
-- Sort patients by height, weight or BMI
-- Proper HTTP status codes (201, 400, 404, 422)
+</div>
 
-## Run locally
+---
+
+## ✨ Features
+
+- **Full CRUD**: create, view, partially update and delete patients
+- **Strict validation** with Pydantic: positive age/height/weight, allowed gender values, non-empty ID
+- **Auto-calculated fields**: `bmi` and `verdict` (`Underweight` / `Normal` / `Overweight` / `Obese`) via Pydantic `computed_field`
+- **Sorting** by height, weight or BMI (ascending or descending)
+- **Correct HTTP status codes**: `201`, `400`, `404`, `422`
+- **Interactive docs** at `/docs` (Swagger UI), generated automatically
+
+> **Note:** `patients.json` holds dummy data and acts as a simple file-based store for learning purposes.
+
+## 🚀 Quick Start
 
 ```bash
+# 1. Clone the repo
+git clone https://github.com/Sourik-10/patient-api.git
+cd patient-api
+
+# 2. Install dependencies
 pip install -r requirements.txt
+
+# 3. Run the server
 uvicorn main:app --reload
 ```
 
-Open http://127.0.0.1:8000/docs for the interactive Swagger UI.
+Then open **http://127.0.0.1:8000/docs** to try every endpoint from the browser.
 
-## Endpoints
+## 📡 API Endpoints
 
-| Method | Path                    | Description                                      |
-|--------|-------------------------|--------------------------------------------------|
-| GET    | `/view`                 | List all patients                                |
-| GET    | `/patient/{patient_id}` | Get one patient                                  |
-| GET    | `/sort?sort_by=bmi&order=desc` | Sort by `height`, `weight` or `bmi`       |
-| POST   | `/create`               | Create a patient                                 |
-| PUT    | `/update/{patient_id}`  | Update any subset of fields, BMI is recalculated |
-| DELETE | `/delete/{patient_id}`  | Delete a patient                                 |
+| Method | Endpoint | Description |
+|:------:|----------|-------------|
+| `GET` | `/view` | List all patients |
+| `GET` | `/patient/{patient_id}` | Get a single patient |
+| `GET` | `/sort?sort_by=bmi&order=desc` | Sort by `height`, `weight` or `bmi` |
+| `POST` | `/create` | Create a new patient |
+| `PUT` | `/update/{patient_id}` | Update any subset of fields (BMI recalculated) |
+| `DELETE` | `/delete/{patient_id}` | Delete a patient |
 
-## Example
+## 🧪 Example
+
+**Create a patient**
 
 ```bash
 curl -X POST http://127.0.0.1:8000/create \
@@ -40,11 +61,59 @@ curl -X POST http://127.0.0.1:8000/create \
   -d '{"id":"P011","name":"Test User","city":"Kolkata","age":28,"gender":"male","height":1.75,"weight":70}'
 ```
 
-## Known limitations
+**Get a patient** (`GET /patient/P002`)
 
-- JSON file storage is not safe for concurrent writes. A real deployment would use a database such as SQLite or PostgreSQL.
-- No authentication.
+```json
+{
+  "name": "Ravi Mehta",
+  "city": "Mumbai",
+  "age": 35,
+  "gender": "male",
+  "height": 1.75,
+  "weight": 85,
+  "bmi": 27.76,
+  "verdict": "Overweight"
+}
+```
 
-## Tech
+## 📏 BMI Categories
 
-Python, FastAPI, Pydantic, Uvicorn
+| BMI | Verdict |
+|-----|---------|
+| below 18.5 | Underweight |
+| 18.5 to 24.99 | Normal |
+| 25 to 29.99 | Overweight |
+| 30 and above | Obese |
+
+## 📁 Project Structure
+
+```
+patient-api/
+├── main.py            # FastAPI app, models and endpoints
+├── patients.json      # Dummy patient data (file-based store)
+├── requirements.txt   # Python dependencies
+└── README.md
+```
+
+## ⚠️ Known Limitations
+
+- JSON file storage is not safe for concurrent writes. A production setup would use a database such as SQLite or PostgreSQL.
+- No authentication or authorization.
+
+## 🔭 Roadmap
+
+- [ ] Move storage to SQLite / PostgreSQL
+- [ ] Add automated tests with `pytest`
+- [ ] Add an ML-powered `/predict` endpoint
+
+## 🛠️ Built With
+
+Python · FastAPI · Pydantic · Uvicorn
+
+---
+
+<div align="center">
+
+Made by [Sourik](https://github.com/Sourik-10)
+
+</div>
